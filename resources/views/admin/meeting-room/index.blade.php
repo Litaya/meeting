@@ -3,5 +3,8 @@
 @section('title','部门管理')
 
 @section('body')
-    会议室管理
+    <div class="row">
+        <h4><i class="fa fa-briefcase push"></i>会议室管理</h4>
+        <hr>
+    </div>
 @stop

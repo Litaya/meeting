@@ -9,7 +9,7 @@
         }
     </style>
     <div class="row">
-        <h3><i class="fa fa-user push"></i>权限管理</h3>
+        <h3><i class="fa fa-key push"></i>权限管理</h3>
         <hr>
     </div>
     <div class="row">

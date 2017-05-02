@@ -1,39 +1,27 @@
 @extends('layouts.app')
 @section('content')
-    <link rel="stylesheet" href="/css/combo.select.css">
-    <script src="/js/jquery.combo.select.js"></script>
     <style>
         #sider{
-            background-color: #333333;
+            background-color: #f8f8f8;
             color:#fff;
-            min-height: 700px;
+            min-height: 750px;
         }
         #main-body{
             padding-top: 40px;
             padding-right: 100px;
         }
-        .container{
-            margin:0;
-            padding:0;
-            width: 100%;
-        }
     </style>
-    <div class="container" style="max-width: 1300px;">
+    <script src="/js/echarts.min.js"></script>
+    <div class="container" style="max-width: 1300px;padding:0;margin:0;">
         <div class="col-lg-2" style="padding-left: 0;padding-right: 40px;">
-            <div id="sider" class="col-lg-12" style="padding-left: 0;">
+            <div id="sider" class="col-lg-12" style="padding-left: 0; box-shadow: 1px 3px 5px #ccc;">
                 @include('admin.layouts._sider')
             </div>
         </div>
-        <div id="main-body" class="col-lg-10">
+        <div id="main-body" class="col-lg-10" style="padding:40px 0 30px 0">
             @include('admin.layouts._message')
             @yield('body')
         </div>
     </div>
 
-
-    <script>
-        $(function() {
-            $('select').comboSelect();
-        });
-    </script>
 @stop

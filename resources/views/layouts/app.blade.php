@@ -12,12 +12,10 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
 
     <script src="/js/app.js"></script>
-    <script src="/js/datetime.js"></script>
-
+    <script src="/js/jquery-plugin.js"></script>
     {!! fa_assets() !!}
 
     <style>
@@ -35,16 +33,14 @@
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-inverse navbar-static-top" style="margin:0;">
+    <nav class="navbar navbar-static-top" style="margin:0;box-shadow: 0 1px 5px #ccc">
         <div class="container">
-            <div class="navbar-header" style="padding-left: 50px;">
+            <div class="navbar-header">
 
                 <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" style="font-size:20px;padding:0 5px;">
                     <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <i class="fa fa-bars"></i>
                 </button>
 
                 <!-- Branding Image -->
@@ -113,8 +109,6 @@
         @yield('content')
     </div>
 </div>
-
-<!-- Scripts -->
 
 </body>
 </html>

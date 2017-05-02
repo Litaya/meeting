@@ -19,7 +19,7 @@ class DepartmentController extends Controller
 	public function show(Request $request,$id){
 		$department = Department::where('id',$id)->first();
 		$members    = User::where('department_id',$id)->where('type',0)->get();
-		$users      = User::where('type',0)->get();
+		$users      = User::where('type',0)->where('department_id',null)->get();
 		return view('admin.department.show',compact('department','members','users'));
 	}
 
@@ -142,4 +142,21 @@ class DepartmentController extends Controller
 		$request->session()->flash('notice_status','success');
 		return redirect()->route('admin.department.show',['id'=>$request->get('department_id')]);
 	}
+
+
+	public function addMembers(Request $request, $id){
+		$this->validate($request,[
+			'user_ids' => 'required'
+		]);
+		$u_ids  = $request->get('user_ids');
+
+		foreach ($u_ids as $u_id){
+			User::where('id',$u_id)->update(['department_id'=>$id]);
+		}
+
+		$request->session()->flash('notice_msg','已成功将'.sizeof($u_ids).'位用户添加至部门'.Department::where('id',$id)->first()->name);
+		$request->session()->flash('notice_status','success');
+		return redirect()->route('admin.department.show',['id'=>$request->get('department_id')]);
+	}
+
 }

@@ -14,7 +14,7 @@ require('laravel-elixir-vue');
  */
 
 elixir(function(mix){
-    mix.sass('app.scss')
-       .webpack(['app.js','jquery-1.8.3.min.js'],'public/js/app.js')
-        .scripts(['bootstrap-datetimepicker.js','bootstrap-datetimepicker.zh-CN.js','bootstrap.js'],'public/js/datetime.js');
+    mix.sass(['app.scss'],'public/css/app.css')
+        .webpack(['app.js'],'public/js/app.js')
+        .scripts(['bootstrap-datetimepicker.js','bootstrap-datetimepicker.zh-CN.js'],'public/js/jquery-plugin.js');
 });

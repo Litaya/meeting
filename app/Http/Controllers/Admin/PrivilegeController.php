@@ -15,7 +15,7 @@ class PrivilegeController extends Controller
 	public function index(Request $request){
 		$user = Auth::user();
 		if($user->type == 1){
-			$users = User::paginate(10);
+			$users = User::paginate(20);
 			$personnel_managers   = User::where('type',1)->paginate(10);
 			$personnel_assistants = User::where('type',2)->paginate(10);
 			$department_managers = User::where('type',3)->paginate(10);
@@ -74,5 +74,71 @@ class PrivilegeController extends Controller
 		$request->session()->flash('notice_msg','您无权进行此操作！');
 		$request->session()->flash('notice_status','danger');
 		return 'failed';
+	}
+
+	# ========= department part ========== #
+
+	// web, post
+	public function setDepartmentManager(Request $request){
+
+		$this->validate($request,[
+			'department_id' => 'required',
+			'user_id'       => 'required'
+		]);
+
+		$department_id = $request->get('department_id');
+		$user_id       = $request->get('user_id');
+
+		$department  = Department::where('id',$department_id)->first();
+
+		// 部门原本的管理员的身份设置为普通职员
+		if(isset($department->manager)) {
+			$old_manager = $department->manager;
+			$old_manager->type = 0;
+			$old_manager->save();
+		}
+		Department::where('id',$department_id)->update(['manager_id'=>$user_id]);
+		User::where('id',$user_id)->update(['type'=>3,'department_id'=>$department_id]);
+
+		$request->session()->flash('notice_msg','操作成功！');
+		$request->session()->flash('notice_status','success');
+
+		return redirect()->route('admin.department.show',['id'=>$department_id]);
+	}
+
+	// web, post
+	public function dropDepartmentManager(Request $request){}
+
+	// web, post
+	public function alterDepartmentManager(Request $request){}
+
+	// web, post
+	public function alterDepartmentMembers(Request $request){
+		$this->validate($request,[
+			'user_ids' => 'required',
+			'department_id' => 'required'
+		]);
+		$dpt_id = $request->get('department_id');
+
+		$users = User::where('department_id',$dpt_id)->where('type',0)->get();
+		$old_uids = [];
+		foreach ($users as $user){
+			array_push($old_uids,$user->id);
+		}
+		$u_ids  = $request->get('user_ids');
+
+		foreach ( $u_ids as $u_id){
+			User::where('id',$u_id)->update(['department_id'=>$dpt_id]);
+		}
+		foreach ($old_uids as $u_id){
+			if(in_array($u_id, $u_ids)){
+				continue;
+			}
+			User::where('id',$u_id)->update(['department_id'=>null]);
+		}
+
+		$request->session()->flash('notice_msg','操作成功！');
+		$request->session()->flash('notice_status','success');
+		return redirect()->route('admin.department.show',['id'=>$request->get('department_id')]);
 	}
 }

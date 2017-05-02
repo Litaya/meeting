@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\PermissionModel;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
 class Permission
 {
@@ -21,17 +23,18 @@ class Permission
 		$uri_arr = explode('/',$uri);
 		$module  = $uri_arr[1];
 
+		if(in_array($module,['login','logout','home']))
+			return $next($request);
+
 		if(Auth::check()){
 			$user = Auth::user();
-			if(in_array($module,['login','logout']))
+			Log::info(Route::currentRouteName());
+			if(PermissionModel::hasPermission($user->type,Route::currentRouteName())){
 				return $next($request);
-			if($user->type == 1 && $module !== 'admin')
-				return redirect()->route('admin.index');
-			if($user->type == 0 && $module == 'admin'){
-				return redirect()->route('home');
+			}else {
+				return PermissionModel::redirect($user->type);
 			}
-		}
-
-		return $next($request);
+		}else
+			return $next($request);
 	}
 }

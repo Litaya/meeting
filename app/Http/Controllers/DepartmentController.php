@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DepartmentController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
     	$user = Auth::user();
     	$codept_users = [];
     	if(isset($user->department_id)){
